@@ -822,3 +822,117 @@ textarea {
         font-size: 1.5rem;
     }
 }
+
+/* FAQ Styling */
+#faq .accordion-item {
+    border: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#faq .accordion-button {
+    font-weight: 600;
+    padding: 1.2rem;
+}
+
+#faq .accordion-button:not(.collapsed) {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#faq .accordion-body {
+    padding: 1.2rem;
+    color: #6c757d;
+}
+
+/* Trust Indicators Styling */
+.trust-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: var(--transition);
+}
+
+.trust-card:hover {
+    transform: translateY(-5px);
+}
+
+.trust-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
+.trust-card h4 {
+    color: var(--text-dark);
+    font-size: 1.2rem;
+    margin: 1rem 0;
+}
+
+.trust-card p {
+    color: #6c757d;
+    margin: 0;
+}
+
+/* Login/Signup Modal Styling */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 2px solid #f8f9fa;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.form-control {
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.btn-primary {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.form-check-label {
+    color: #6c757d;
+}
+
+/* Toast notification styling */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1060;
+}
+
+.toast {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

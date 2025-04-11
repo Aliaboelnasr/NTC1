@@ -1,0 +1,224 @@
+.transactions-section {
+    padding: 20px;
+}
+
+.filters-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.table th {
+    cursor: pointer;
+    user-select: none;
+}
+
+.table th i {
+    margin-left: 5px;
+    opacity: 0.5;
+}
+
+.table th:hover i {
+    opacity: 1;
+}
+
+.badge {
+    padding: 6px 12px;
+    font-weight: 500;
+}
+
+.transaction-details {
+    padding: 15px;
+}
+
+.transaction-details p {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.transaction-details p:last-child {
+    border-bottom: none;
+}
+
+.showing-entries {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .filters-section .col-md-3 {
+        margin-bottom: 15px;
+    }
+
+    .table-responsive {
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+}
+
+/* General Styles */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Stat Cards */
+.stat-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card-body {
+    padding: 1.5rem;
+}
+
+.stat-card h6 {
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card h3 {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-top: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.table th:hover {
+    background-color: #e9ecef;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+
+/* Transaction Type Badges */
+.badge-deposit {
+    background-color: #28a745;
+}
+
+.badge-withdrawal {
+    background-color: #dc3545;
+}
+
+.badge-transfer {
+    background-color: #007bff;
+}
+
+.badge-exchange {
+    background-color: #6f42c1;
+}
+
+/* Status Badges */
+.badge-completed {
+    background-color: #198754;
+}
+
+.badge-pending {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.badge-failed {
+    background-color: #dc3545;
+}
+
+/* Filter Form */
+.form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-select, .form-control {
+    border-color: #dee2e6;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Pagination */
+.pagination .page-link {
+    color: #007bff;
+    padding: 0.5rem 1rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Modal Styles */
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Transaction Details */
+.transaction-detail-row {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.transaction-detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Toast Styles */
+.toast {
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+
+    .table-responsive {
+        margin-bottom: 1rem;
+    }
+
+    .showing-entries {
+        margin-bottom: 1rem;
+    }
+
+    .pagination {
+        justify-content: center;
+    }
+} 

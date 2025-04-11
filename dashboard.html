@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NTC Exchange</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/dashboard.css">
+</head>
+<body class="dashboard-body">
+    <!-- Sidebar -->
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="./imgs/WhatsApp Image 2025-03-08 at 19.06.52_eb9fc1a7.jpg" alt="Logo" class="sidebar-logo">
+                <h3>NTC Exchange</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="#overview"><i class="fas fa-home"></i> Overview</a>
+                </li>
+                <li>
+                    <a href="#transactions"><i class="fas fa-history"></i> Transactions</a>
+                </li>
+                <li>
+                    <a href="#exchange"><i class="fas fa-exchange-alt"></i> Exchange</a>
+                </li>
+                <li>
+                    <a href="#wallet"><i class="fas fa-wallet"></i> Wallet</a>
+                </li>
+                <li>
+                    <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+                <li>
+                    <a href="exchange.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navigation -->
+            <nav class="dashboard-nav">
+                <div class="nav-left">
+                    <button id="sidebar-toggle" class="btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2>Dashboard</h2>
+                </div>
+                <div class="nav-right">
+                    <div class="user-info dropdown">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userName">User Name</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="handleLogout()">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Overview Section -->
+                <section id="overview" class="active-section">
+                    <div class="row">
+                        <!-- Stats Cards -->
+                        <div class="col-md-3 mb-4">
+                            <div class="stats-card">
+                                <div class="stats-icon">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="stats-info">
+                                    <h4>Total Balance</h4>
+                                    <p>$25,000</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="stats-card">
+                                <div class="stats-icon">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="stats-info">
+                                    <h4>Total Exchanges</h4>
+                                    <p>156</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="stats-card">
+                                <div class="stats-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="stats-info">
+                                    <h4>Active Orders</h4>
+                                    <p>12</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="stats-card">
+                                <div class="stats-icon">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                                <div class="stats-info">
+                                    <h4>Available Credit</h4>
+                                    <p>$5,000</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Transactions -->
+                        <div class="col-md-8 mb-4">
+                            <div class="content-card">
+                                <h3>Recent Transactions</h3>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Type</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recentTransactions">
+                                            <!-- Transactions will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Exchange -->
+                        <div class="col-md-4 mb-4">
+                            <div class="content-card">
+                                <h3>Quick Exchange</h3>
+                                <form id="quickExchangeForm">
+                                    <div class="mb-3">
+                                        <label>From</label>
+                                        <select class="form-select">
+                                            <option value="USD">USD</option>
+                                            <option value="EUR">EUR</option>
+                                            <option value="GBP">GBP</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>To</label>
+                                        <select class="form-select">
+                                            <option value="EUR">EUR</option>
+                                            <option value="USD">USD</option>
+                                            <option value="GBP">GBP</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Amount</label>
+                                        <input type="number" class="form-control" placeholder="Enter amount">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Exchange Now</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Add this after the Quick Exchange section -->
+                        <section id="add-money" class="container my-4">
+                            <div class="content-card">
+                                <h3 class="section-title">Add Money to Your Account</h3>
+                                <div class="row">
+                                    <!-- Amount Input -->
+                                    <div class="col-md-6 mb-4">
+                                        <div class="amount-input-container">
+                                            <label for="depositAmount">Amount</label>
+                                            <div class="input-group">
+                                                <select class="form-select" id="depositCurrency" style="max-width: 100px;">
+                                                    <option value="USD">USD</option>
+                                                    <option value="EUR">EUR</option>
+                                                    <option value="GBP">GBP</option>
+                                                </select>
+                                                <input type="number" class="form-control" id="depositAmount" placeholder="Enter amount">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Payment Methods -->
+                                    <div class="col-md-12">
+                                        <label>Select Payment Method</label>
+                                        <div class="payment-methods-grid">
+                                            <!-- Credit/Debit Card -->
+                                            <div class="payment-method-card" onclick="selectPaymentMethod('card')">
+                                                <div class="payment-method-icon">
+                                                    <img src="./imgs/credit-cards.png" alt="Credit Cards">
+                                                </div>
+                                                <h4>Credit/Debit Card</h4>
+                                                <p>Visa, Mastercard, etc.</p>
+                                            </div>
+
+                                            <!-- InstaPay -->
+                                            <div class="payment-method-card" onclick="selectPaymentMethod('instapay')">
+                                                <div class="payment-method-icon">
+                                                    <img src="./imgs/instapay.png" alt="InstaPay">
+                                                </div>
+                                                <h4>InstaPay</h4>
+                                                <p>Pay using InstaPay</p>
+                                            </div>
+
+                                            <!-- Bank Transfer -->
+                                            <div class="payment-method-card" onclick="selectPaymentMethod('bank')">
+                                                <div class="payment-method-icon">
+                                                    <img src="./imgs/bank-transfer.png" alt="Bank Transfer">
+                                                </div>
+                                                <h4>Bank Transfer</h4>
+                                                <p>Direct bank transfer</p>
+                                            </div>
+
+                                            <!-- Fawry -->
+                                            <div class="payment-method-card" onclick="selectPaymentMethod('fawry')">
+                                                <div class="payment-method-icon">
+                                                    <img src="./imgs/fawry.png" alt="Fawry">
+                                                </div>
+                                                <h4>Fawry</h4>
+                                                <p>Pay using Fawry</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Forms Container -->
+                                <div id="paymentForms" class="mt-4">
+                                    <!-- Credit Card Form -->
+                                    <div id="cardPaymentForm" class="payment-form" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label>Card Number</label>
+                                                <input type="text" class="form-control" placeholder="1234 5678 9012 3456">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>Expiry Date</label>
+                                                <input type="text" class="form-control" placeholder="MM/YY">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label>CVV</label>
+                                                <input type="text" class="form-control" placeholder="123">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- InstaPay Form -->
+                                    <div id="instapayForm" class="payment-form" style="display: none;">
+                                        <div class="qr-code-container text-center">
+                                            <img src="./imgs/qr-code.png" alt="InstaPay QR Code">
+                                            <p class="mt-3">Scan QR code with InstaPay app</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Bank Transfer Form -->
+                                    <div id="bankTransferForm" class="payment-form" style="display: none;">
+                                        <div class="bank-details">
+                                            <h4>Bank Account Details</h4>
+                                            <p><strong>Bank Name:</strong> Example Bank</p>
+                                            <p><strong>Account Name:</strong> NTC Exchange</p>
+                                            <p><strong>Account Number:</strong> 1234567890</p>
+                                            <p><strong>IBAN:</strong> EG123456789012345678901234</p>
+                                            <p><strong>SWIFT Code:</strong> EXAMPLEG</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fawry Form -->
+                                    <div id="fawryForm" class="payment-form" style="display: none;">
+                                        <div class="fawry-code text-center">
+                                            <h4>Fawry Code</h4>
+                                            <div class="code-display">
+                                                <span id="fawryCode">123 456 789</span>
+                                                <button class="btn btn-sm btn-outline-primary ms-2" onclick="copyFawryCode()">
+                                                    <i class="fas fa-copy"></i>
+                                                </button>
+                                            </div>
+                                            <p class="mt-3">Use this code to pay at any Fawry outlet</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="text-center mt-4">
+                                        <button class="btn btn-primary btn-lg" onclick="processPayment()">
+                                            Proceed to Payment
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+                <!-- Wallet Section -->
+                <section id="wallet" class="dashboard-section">
+                    <div class="container">
+                        <!-- Balance Cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="balance-card primary">
+                                    <div class="balance-icon">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <div class="balance-info">
+                                        <h3>USD Balance</h3>
+                                        <h2>$<span id="usdBalance">25,000.00</span></h2>
+                                        <p>Primary Currency</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="balance-card secondary">
+                                    <div class="balance-icon">
+                                        <i class="fas fa-euro-sign"></i>
+                                    </div>
+                                    <div class="balance-info">
+                                        <h3>EUR Balance</h3>
+                                        <h2>€<span id="eurBalance">21,250.00</span></h2>
+                                        <p>Secondary Currency</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="balance-card tertiary">
+                                    <div class="balance-icon">
+                                        <i class="fas fa-pound-sign"></i>
+                                    </div>
+                                    <div class="balance-info">
+                                        <h3>GBP Balance</h3>
+                                        <h2>£<span id="gbpBalance">18,750.00</span></h2>
+                                        <p>Secondary Currency</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="quick-actions">
+                                    <button class="action-btn deposit" onclick="showDepositModal()">
+                                        <i class="fas fa-plus"></i>
+                                        Deposit
+                                    </button>
+                                    <button class="action-btn withdraw" onclick="showWithdrawModal()">
+                                        <i class="fas fa-minus"></i>
+                                        Withdraw
+                                    </button>
+                                    <button class="action-btn transfer" onclick="showTransferModal()">
+                                        <i class="fas fa-exchange-alt"></i>
+                                        Transfer
+                                    </button>
+                                    <button class="action-btn history">
+                                        <i class="fas fa-history"></i>
+                                        History
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Transaction History -->
+                        <div class="content-card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h3>Recent Transactions</h3>
+                                <div class="transaction-filters">
+                                    <select class="form-select" id="transactionType">
+                                        <option value="all">All Transactions</option>
+                                        <option value="deposit">Deposits</option>
+                                        <option value="withdrawal">Withdrawals</option>
+                                        <option value="transfer">Transfers</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Type</th>
+                                            <th>Amount</th>
+                                            <th>Currency</th>
+                                            <th>Status</th>
+                                            <th>Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="transactionHistory">
+                                        <!-- Transactions will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deposit Modal -->
+                    <div class="modal fade" id="depositModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Deposit Funds</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="depositForm">
+                                        <div class="mb-3">
+                                            <label>Select Currency</label>
+                                            <select class="form-select" id="depositCurrency">
+                                                <option value="USD">USD</option>
+                                                <option value="EUR">EUR</option>
+                                                <option value="GBP">GBP</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Amount</label>
+                                            <input type="number" class="form-control" id="depositAmount" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Payment Method</label>
+                                            <div class="payment-methods">
+                                                <div class="payment-method">
+                                                    <input type="radio" name="paymentMethod" value="card" id="cardMethod">
+                                                    <label for="cardMethod">
+                                                        <i class="fas fa-credit-card"></i>
+                                                        Card
+                                                    </label>
+                                                </div>
+                                                <div class="payment-method">
+                                                    <input type="radio" name="paymentMethod" value="bank" id="bankMethod">
+                                                    <label for="bankMethod">
+                                                        <i class="fas fa-university"></i>
+                                                        Bank
+                                                    </label>
+                                                </div>
+                                                <div class="payment-method">
+                                                    <input type="radio" name="paymentMethod" value="crypto" id="cryptoMethod">
+                                                    <label for="cryptoMethod">
+                                                        <i class="fab fa-bitcoin"></i>
+                                                        Crypto
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Proceed to Payment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Withdraw Modal -->
+                    <div class="modal fade" id="withdrawModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Withdraw Funds</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="withdrawForm">
+                                        <div class="mb-3">
+                                            <label>Select Currency</label>
+                                            <select class="form-select" id="withdrawCurrency">
+                                                <option value="USD">USD</option>
+                                                <option value="EUR">EUR</option>
+                                                <option value="GBP">GBP</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Amount</label>
+                                            <input type="number" class="form-control" id="withdrawAmount" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Withdrawal Method</label>
+                                            <select class="form-select" id="withdrawMethod">
+                                                <option value="bank">Bank Transfer</option>
+                                                <option value="card">Card Refund</option>
+                                                <option value="crypto">Cryptocurrency</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Request Withdrawal</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transfer Modal -->
+                    <div class="modal fade" id="transferModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Transfer Funds</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="transferForm">
+                                        <div class="mb-3">
+                                            <label>From Currency</label>
+                                            <select class="form-select" id="fromCurrency">
+                                                <option value="USD">USD</option>
+                                                <option value="EUR">EUR</option>
+                                                <option value="GBP">GBP</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>To Currency</label>
+                                            <select class="form-select" id="toCurrency">
+                                                <option value="EUR">EUR</option>
+                                                <option value="USD">USD</option>
+                                                <option value="GBP">GBP</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label>Amount</label>
+                                            <input type="number" class="form-control" id="transferAmount" required>
+                                        </div>
+                                        <div class="exchange-rate-info">
+                                            <p>Exchange Rate: <span id="exchangeRate">1 USD = 0.85 EUR</span></p>
+                                            <p>You'll receive: <span id="receiveAmount">0.00</span></p>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Confirm Transfer</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Money Modal -->
+    <div class="modal fade" id="addMoneyModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Money</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="add-money-form">
+                    <div class="modal-body">
+                        <!-- Add form fields here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Money</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Similar modals for Withdraw, Transfer, and Exchange -->
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/dashboard.js"></script>
+</body>
+</html> 

@@ -1,0 +1,105 @@
+<div class="transactions-section" id="transactions-section">
+    <div class="section-header d-flex justify-content-between align-items-center mb-4">
+        <h2>Transaction History</h2>
+        <div class="header-actions">
+            <button class="btn btn-outline-primary" id="exportTransactions">
+                <i class="fas fa-download"></i> Export
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section card mb-4">
+        <div class="card-body">
+            <form id="transaction-filters" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Date Range</label>
+                    <select class="form-select" id="dateRange">
+                        <option value="7">Last 7 days</option>
+                        <option value="30">Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Transaction Type</label>
+                    <select class="form-select" id="transactionType">
+                        <option value="all">All Types</option>
+                        <option value="deposit">Deposits</option>
+                        <option value="withdrawal">Withdrawals</option>
+                        <option value="transfer">Transfers</option>
+                        <option value="exchange">Exchange</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" id="transactionStatus">
+                        <option value="all">All Status</option>
+                        <option value="completed">Completed</option>
+                        <option value="pending">Pending</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Currency</label>
+                    <select class="form-select" id="currency">
+                        <option value="all">All Currencies</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transactions Table -->
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Date <i class="fas fa-sort"></i></th>
+                    <th>Transaction ID</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody id="transactionsTableBody">
+                <!-- Transactions will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="showing-entries">
+            Showing <span id="showing-start">1</span> to <span id="showing-end">10</span> of <span id="total-entries">0</span> entries
+        </div>
+        <nav aria-label="Transaction navigation">
+            <ul class="pagination" id="transactionPagination">
+                <!-- Pagination will be generated here -->
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Transaction Details Modal -->
+    <div class="modal fade" id="transactionDetailsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Transaction Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="transactionDetailsBody">
+                    <!-- Transaction details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

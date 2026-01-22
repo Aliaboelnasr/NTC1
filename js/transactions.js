@@ -1,324 +1,209 @@
 class TransactionManager {
     constructor() {
-        this.currentPage = 1;
-        this.itemsPerPage = 10;
-        this.filters = {
-            startDate: '',
-            endDate: '',
-            type: 'all',
-            status: 'all',
-            currency: 'all',
-            minAmount: '',
-            maxAmount: ''
-        };
-        this.initializeEventListeners();
-        this.loadTransactions();
-        this.loadStatistics();
+        this.transactions = [];
+        this.init();
     }
 
-    initializeEventListeners() {
-        // Filter form submission
-        document.getElementById('filterForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.updateFilters();
+    init() {
             this.loadTransactions();
-        });
+        this.setupEventListeners();
+    }
 
-        // Refresh button
-        document.getElementById('refreshBtn').addEventListener('click', () => {
-            this.loadTransactions();
-            this.loadStatistics();
-        });
-
-        // Export button
-        document.getElementById('exportBtn').addEventListener('click', () => {
-            this.exportTransactions();
-        });
-
-        // Table sorting
-        document.querySelectorAll('th').forEach(header => {
-            header.addEventListener('click', () => {
-                this.handleSort(header.textContent.toLowerCase());
+    setupEventListeners() {
+        // Filter buttons
+        document.querySelectorAll('[data-filter]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const filterType = e.target.dataset.filter;
+                this.filterTransactions(filterType);
+                
+                // Update active button state
+                document.querySelectorAll('[data-filter]').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                e.target.classList.add('active');
             });
         });
 
-        // Logout button
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            this.handleLogout();
+        // Listen for new transactions from wallet
+        window.addEventListener('walletTransaction', (event) => {
+            this.addNewTransaction(event.detail);
         });
-    }
-
-    updateFilters() {
-        this.filters = {
-            startDate: document.getElementById('startDate').value,
-            endDate: document.getElementById('endDate').value,
-            type: document.getElementById('transactionType').value,
-            status: document.getElementById('status').value,
-            currency: document.getElementById('currency').value,
-            minAmount: document.getElementById('minAmount').value,
-            maxAmount: document.getElementById('maxAmount').value
-        };
     }
 
     async loadTransactions() {
         try {
-            const response = await fetch('/api/transactions?' + new URLSearchParams({
-                page: this.currentPage,
-                limit: this.itemsPerPage,
-                ...this.filters
-            }), {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                this.renderTransactions(data.transactions);
-                this.updatePagination(data.totalPages, data.total);
-            } else {
-                this.showToast(data.message, 'error');
-            }
+            // In a real app, this would be an API call
+            const transactions = await this.fetchTransactions();
+            this.transactions = transactions;
+            this.updateUI();
         } catch (error) {
-            this.showToast('Error loading transactions', 'error');
+            console.error('Error loading transactions:', error);
+            this.showError('Failed to load transactions');
         }
     }
 
-    renderTransactions(transactions) {
-        const tbody = document.getElementById('transactionsTableBody');
-        tbody.innerHTML = '';
+    async fetchTransactions() {
+        // Simulate API call - replace with actual API endpoint
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve([
+                    {
+                        id: 1,
+                        date: new Date(),
+                        type: 'deposit',
+                        amount: 1000,
+                        status: 'completed',
+                        description: 'Bank transfer deposit'
+                    },
+                    {
+                        id: 2,
+                        date: new Date(Date.now() - 86400000),
+                        type: 'withdrawal',
+                        amount: -500,
+                        status: 'completed',
+                        description: 'ATM withdrawal'
+                    }
+                    // Add more mock transactions as needed
+                ]);
+            }, 1000);
+        });
+    }
 
-        transactions.forEach(transaction => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${this.formatDateTime(transaction.date)}</td>
-                <td>${transaction.transactionId}</td>
-                <td><span class="badge badge-${transaction.type.toLowerCase()}">${transaction.type}</span></td>
-                <td>${this.formatAmount(transaction.amount, transaction.currency)}</td>
-                <td>${transaction.currency}</td>
-                <td><span class="badge badge-${transaction.status.toLowerCase()}">${transaction.status}</span></td>
-                <td>${transaction.description || '-'}</td>
+    async addNewTransaction(transaction) {
+        this.transactions.unshift(transaction);
+        this.updateUI();
+
+        // Update balance display if available
+        if (window.walletManager) {
+            window.walletManager.loadBalance();
+        }
+    }
+
+    updateUI() {
+        this.updateTransactionTable();
+        this.updateSummary();
+    }
+
+    updateTransactionTable() {
+        const tbody = document.querySelector('#transactionTable tbody');
+        if (!tbody) return;
+
+        tbody.innerHTML = this.transactions.map(transaction => `
+            <tr class="transaction-row ${transaction.type}">
+                <td>${new Date(transaction.date).toLocaleString()}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary me-1" onclick="transactionManager.viewDetails('${transaction.transactionId}')">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="transactionManager.downloadReceipt('${transaction.transactionId}')">
-                        <i class="fas fa-file-download"></i>
-                    </button>
+                    <span class="badge ${this.getTypeBadgeClass(transaction.type)}">
+                        ${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
+                    </span>
                 </td>
-            `;
-            tbody.appendChild(row);
-        });
+                <td class="${transaction.amount >= 0 ? 'text-success' : 'text-danger'}">
+                    ${this.formatCurrency(Math.abs(transaction.amount))}
+                </td>
+                <td>
+                    <span class="badge ${this.getStatusBadgeClass(transaction.status)}">
+                        ${transaction.status}
+                    </span>
+                </td>
+                <td>${transaction.description}</td>
+            </tr>
+        `).join('');
     }
 
-    async loadStatistics() {
-        try {
-            const response = await fetch('/api/transactions/statistics', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                this.updateStatistics(data.statistics);
-            }
-        } catch (error) {
-            this.showToast('Error loading statistics', 'error');
-        }
-    }
-
-    updateStatistics(statistics) {
-        document.getElementById('totalTransactions').textContent = statistics.total;
-        document.getElementById('totalVolume').textContent = this.formatAmount(statistics.volume, 'USD');
-        document.getElementById('pendingTransactions').textContent = statistics.pending;
-        document.getElementById('successRate').textContent = `${statistics.successRate}%`;
-    }
-
-    async viewDetails(transactionId) {
-        try {
-            const response = await fetch(`/api/transactions/${transactionId}`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                this.showTransactionModal(data.transaction);
-            } else {
-                this.showToast(data.message, 'error');
-            }
-        } catch (error) {
-            this.showToast('Error loading transaction details', 'error');
-        }
-    }
-
-    showTransactionModal(transaction) {
-        const detailsHtml = `
-            <div class="transaction-details">
-                <div class="transaction-detail-row">
-                    <div class="row">
-                        <div class="col-md-4 detail-label">Transaction ID</div>
-                        <div class="col-md-8">${transaction.transactionId}</div>
-                    </div>
-                </div>
-                <div class="transaction-detail-row">
-                    <div class="row">
-                        <div class="col-md-4 detail-label">Date & Time</div>
-                        <div class="col-md-8">${this.formatDateTime(transaction.date)}</div>
-                    </div>
-                </div>
-                <div class="transaction-detail-row">
-                    <div class="row">
-                        <div class="col-md-4 detail-label">Type</div>
-                        <div class="col-md-8">
-                            <span class="badge badge-${transaction.type.toLowerCase()}">${transaction.type}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="transaction-detail-row">
-                    <div class="row">
-                        <div class="col-md-4 detail-label">Amount</div>
-                        <div class="col-md-8">${this.formatAmount(transaction.amount, transaction.currency)}</div>
-                    </div>
-                </div>
-                <div class="transaction-detail-row">
-                    <div class="row">
-                        <div class="col-md-4 detail-label">Status</div>
-                        <div class="col-md-8">
-                            <span class="badge badge-${transaction.status.toLowerCase()}">${transaction.status}</span>
-                        </div>
-                    </div>
-                </div>
-                ${this.getAdditionalDetails(transaction)}
-            </div>
-        `;
-
-        document.getElementById('transactionDetails').innerHTML = detailsHtml;
-        new bootstrap.Modal(document.getElementById('transactionModal')).show();
-    }
-
-    getAdditionalDetails(transaction) {
-        let details = '';
+    updateSummary() {
+        const summary = this.calculateSummary();
         
-        if (transaction.type === 'transfer') {
-            details += `
-                <div class="transaction-detail-row">
-                    <div class="row">
-                        <div class="col-md-4 detail-label">Recipient</div>
-                        <div class="col-md-8">${transaction.recipient}</div>
-                    </div>
-                </div>
-            `;
-        } else if (transaction.type === 'exchange') {
-            details += `
-                <div class="transaction-detail-row">
-                    <div class="row">
-                        <div class="col-md-4 detail-label">Exchange Rate</div>
-                        <div class="col-md-8">${transaction.exchangeRate}</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        return details;
+        document.getElementById('totalTransactions').textContent = summary.total;
+        document.getElementById('totalDeposits').textContent = this.formatCurrency(summary.deposits);
+        document.getElementById('totalWithdrawals').textContent = this.formatCurrency(summary.withdrawals);
     }
 
-    async downloadReceipt(transactionId) {
-        try {
-            const response = await fetch(`/api/transactions/${transactionId}/receipt`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-
-            if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `receipt-${transactionId}.pdf`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                a.remove();
-            } else {
-                throw new Error('Failed to download receipt');
+    calculateSummary() {
+        return this.transactions.reduce((summary, transaction) => {
+            if (transaction.type === 'deposit' && transaction.status === 'completed') {
+                summary.deposits += transaction.amount;
+            } else if (transaction.type === 'withdrawal' && transaction.status === 'completed') {
+                summary.withdrawals += Math.abs(transaction.amount);
             }
-        } catch (error) {
-            this.showToast('Error downloading receipt', 'error');
-        }
+            summary.total++;
+            return summary;
+        }, { deposits: 0, withdrawals: 0, total: 0 });
     }
 
-    async exportTransactions() {
-        try {
-            const response = await fetch('/api/transactions/export?' + new URLSearchParams(this.filters), {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-
-            if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `transactions-${new Date().toISOString().split('T')[0]}.csv`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                a.remove();
+    filterTransactions(type) {
+        const rows = document.querySelectorAll('#transactionTable tbody tr');
+        rows.forEach(row => {
+            if (type === 'all' || row.classList.contains(type)) {
+                row.style.display = '';
             } else {
-                throw new Error('Failed to export transactions');
+                row.style.display = 'none';
             }
-        } catch (error) {
-            this.showToast('Error exporting transactions', 'error');
-        }
-    }
-
-    showToast(message, type = 'info') {
-        const toastContainer = document.querySelector('.toast-container');
-        const toast = document.createElement('div');
-        toast.className = `toast align-items-center text-white bg-${type}`;
-        toast.setAttribute('role', 'alert');
-        toast.setAttribute('aria-live', 'assertive');
-        toast.setAttribute('aria-atomic', 'true');
-
-        toast.innerHTML = `
-            <div class="d-flex">
-                <div class="toast-body">${message}</div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-            </div>
-        `;
-
-        toastContainer.appendChild(toast);
-        const bsToast = new bootstrap.Toast(toast);
-        bsToast.show();
-
-        toast.addEventListener('hidden.bs.toast', () => {
-            toast.remove();
         });
     }
 
-    // Utility functions
-    formatDateTime(dateString) {
-        return new Date(dateString).toLocaleString();
+    getTypeBadgeClass(type) {
+        return type === 'deposit' ? 'bg-success' : 'bg-danger';
     }
 
-    formatAmount(amount, currency) {
+    getStatusBadgeClass(status) {
+        switch (status) {
+            case 'completed': return 'bg-success';
+            case 'pending': return 'bg-warning';
+            case 'failed': return 'bg-danger';
+            default: return 'bg-secondary';
+        }
+    }
+
+    formatCurrency(amount) {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: currency
+            currency: 'USD'
         }).format(amount);
     }
 
-    handleLogout() {
-        localStorage.removeItem('token');
-        window.location.href = 'login.html';
+    showError(message) {
+        // Implement error notification
+        console.error(message);
     }
 }
 
-// Initialize the transaction manager
-const transactionManager = new TransactionManager(); 
+// Initialize transaction manager
+document.addEventListener('DOMContentLoaded', () => {
+    window.transactionManager = new TransactionManager();
+}); 
+// Add this to the bottom of each page's script section
+document.addEventListener('DOMContentLoaded', () => {
+    // Set active state for current page
+    const currentPage = window.location.pathname.split('/').pop();
+    const navigationButtons = document.querySelectorAll('.navigation-buttons .btn');
+    
+    navigationButtons.forEach(button => {
+        const href = button.getAttribute('href');
+        if (href === currentPage) {
+            button.classList.add('active');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadTransactionHistory();
+});
+
+function loadTransactionHistory() {
+    const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+    const historyTable = document.getElementById('transactionHistory');
+
+    // Clear existing transactions
+    historyTable.innerHTML = '';
+
+    // Add transactions to the table
+    transactions.forEach(transaction => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${new Date(transaction.date).toLocaleDateString()}</td>
+            <td>${transaction.type}</td>
+            <td>$${transaction.amount.toFixed(2)}</td>
+            <td><span class="badge bg-success">${transaction.status}</span></td>
+        `;
+        historyTable.appendChild(row);
+    });
+}

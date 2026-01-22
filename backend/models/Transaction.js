@@ -8,29 +8,39 @@ const transactionSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['deposit', 'withdrawal', 'transfer'],
+        enum: ['deposit', 'withdrawal'],
         required: true
     },
     amount: {
         type: Number,
         required: true
     },
-    fromCurrency: {
+    currency: {
         type: String,
-        required: true
-    },
-    toCurrency: {
-        type: String,
-        required: true
+        required: true,
+        default: 'USD'
     },
     status: {
         type: String,
-        enum: ['pending', 'completed', 'failed'],
+        enum: ['pending', 'completed', 'failed', 'cancelled'],
         default: 'pending'
     },
-    paymentMethod: String,
+    balanceAfter: {
+        type: Number,
+        required: true
+    },
+    paymentMethod: {
+        type: String,
+        required: true,
+        enum: ['bank_transfer', 'credit_card', 'crypto', 'paypal']
+    },
     description: String,
-    createdAt: {
+    metadata: {
+        bankAccount: String,
+        transactionId: String,
+        paymentReference: String
+    },
+    timestamp: {
         type: Date,
         default: Date.now
     }

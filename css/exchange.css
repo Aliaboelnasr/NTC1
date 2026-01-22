@@ -1,0 +1,77 @@
+/* exchange.css */
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.exchange-summary {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.list-group-item {
+    border-left: none;
+    border-right: none;
+}
+
+.toast-container {
+    z-index: 1050;
+}
+
+.alert-info {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    color: #212529;
+}
+
+#swapBtn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: -10px auto;
+    background-color: white;
+    z-index: 1;
+    position: relative;
+}
+
+#maxAmountBtn {
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+#maxAmountBtn:hover {
+    text-decoration: underline;
+}
+
+.exchange-rate-info {
+    font-size: 0.875rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+}

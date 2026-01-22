@@ -12,27 +12,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <link rel="stylesheet" href="./css/chatbot.css">
     <link rel="icon" type="image/png" href="./imgs/WhatsApp Image 2025-03-08 at 19.06.52_eb9fc1a7.jpg">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="./imgs/WhatsApp Image 2025-03-08 at 19.06.52_eb9fc1a7.jpg" alt="Currency Exchange Logo"
                     class="navbar-logo">
-                NTC</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+                NTC
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-                <ul class="navbar-nav mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item mx-3">
                         <a class="nav-link active" aria-current="page" href="#home">Home</a>
                     </li>
@@ -43,15 +42,45 @@
                         <a class="nav-link" href="#news-carousel">Money News</a>
                     </li>
                     <li class="nav-item mx-3">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
-                    </li>
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</a>
+                        <a class="nav-link" href="#contactForm">Contact</a>
                     </li>
                 </ul>
+                <!-- Guest Navigation -->
+                <div class="d-flex gap-2" data-guest-only>
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                </div>
+                <!-- Authenticated User Navigation -->
+                <div class="nav-item dropdown d-none" data-auth-required>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle"></i>
+                        <span data-user-name>User</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="dashboard.html">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="profile.html">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -81,63 +110,19 @@
     <section id="Services" class="services py-5">
         <div class="container">
             <div class="title text-center">
-                <h2>Services</h2>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                <h2>Our Services</h2>
+                <p>Comprehensive currency exchange solutions for all your needs</p>
                 <div class="line-services"></div>
             </div>
             <div class="row gy-4">
                 <div class="col-md-4">
                     <div class="service-card">
                         <div class="service-icon">
-                            <i class="fas fa-laptop-code"></i>
+                            <i class="fas fa-exchange-alt"></i>
                         </div>
                         <div class="service-content">
-                            <h4>Web Design</h4>
-                            <p>Professional and modern web design services tailored to your needs.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <div class="service-content">
-                            <h4>Web Development</h4>
-                            <p>Custom web development solutions for your business requirements.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="fas fa-camera"></i>
-                        </div>
-                        <div class="service-content">
-                            <h4>Photography</h4>
-                            <p>High-quality photography services for your digital presence.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <div class="service-content">
-                            <h4>Responsive Design</h4>
-                            <p>Mobile-friendly designs that work on all devices.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="fas fa-palette"></i>
-                        </div>
-                        <div class="service-content">
-                            <h4>Graphic Design</h4>
-                            <p>Creative graphic design solutions for your brand identity.</p>
+                            <h4>Currency Exchange</h4>
+                            <p>Fast and secure currency exchange services with competitive rates.</p>
                         </div>
                     </div>
                 </div>
@@ -147,8 +132,52 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="service-content">
-                            <h4>Marketing Services</h4>
-                            <p>Strategic marketing solutions to grow your business.</p>
+                            <h4>Live Rates</h4>
+                            <p>Real-time currency conversion with up-to-date exchange rates.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>International Transfers</h4>
+                            <p>Secure international money transfers with competitive fees.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Secure Transactions</h4>
+                            <p>Bank-level security for all your currency exchange transactions.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>24/7 Support</h4>
+                            <p>Round-the-clock customer support for all your queries.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Business Solutions</h4>
+                            <p>Tailored currency exchange solutions for businesses.</p>
                         </div>
                     </div>
                 </div>
@@ -189,26 +218,51 @@
         </div>
     </section>
 
-    <!--  -->
+    <!-- Live Exchange Rates Section -->
     <section id="live-rates" class="container my-4">
         <h2 class="text-center mb-4">Live Exchange Rates</h2>
-        <div class="table-responsive">
-            <table class="table table-bordered text-center align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Currency</th>
-                        <th>Rate</th>
-                        <th>Change (24h)</th>
-                        <th style="width: 200px;">Chart</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="exchange-rates-body">
-                </tbody>
-            </table>
+        <div class="card shadow">
+            <div class="card-body">
+                <!-- Exchange Rate Chart -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="chart-container" style="position: relative; height:400px; width:100%">
+                            <canvas id="exchangeRateChart"></canvas>
+                        </div>
+                        <div class="d-flex justify-content-center mt-3">
+                            <div class="btn-group" role="group" aria-label="Chart time range">
+                                <button type="button" class="btn btn-outline-primary" data-range="1D">1D</button>
+                                <button type="button" class="btn btn-outline-primary" data-range="1W">1W</button>
+                                <button type="button" class="btn btn-outline-primary active" data-range="1M">1M</button>
+                                <button type="button" class="btn btn-outline-primary" data-range="3M">3M</button>
+                                <button type="button" class="btn btn-outline-primary" data-range="1Y">1Y</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exchange Rates Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Currency</th>
+                                <th>Rate</th>
+                                <th>Change (24h)</th>
+                                <th>Chart</th>
+                            </tr>
+                        </thead>
+                        <tbody id="exchange-rates-body">
+                            <!-- Rates will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-end mt-3">
+                    <small class="text-muted">Last updated: <span id="lastUpdate">--:--</span></small>
+                </div>
+            </div>
         </div>
     </section>
-    <!--  -->
 
     <section id="news-carousel" class="container my-5">
         <h2 class="text-center mb-4">Latest Financial News</h2>
@@ -275,21 +329,267 @@
     <section id="converter" class="container my-5">
         <h2 class="text-center mb-4">Currency Converter</h2>
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="input-group mb-3">
-                    <input type="number" id="amount" class="form-control" placeholder="Enter amount">
-                    <select id="currency" class="form-select">
-                        <option value="1.1">USD to EUR</option>
-                        <option value="0.9">EUR to USD</option>
-                    </select>
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form id="converterForm">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="amount" class="form-label">Amount</label>
+                                    <input type="number" id="amount" class="form-control" placeholder="Enter amount" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="fromCurrency" class="form-label">From Currency</label>
+                                    <select id="fromCurrency" class="form-select" required>
+                                        <option value="">Select currency</option>
+                                        <option value="USD">USD - US Dollar</option>
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="GBP">GBP - British Pound</option>
+                                        <option value="JPY">JPY - Japanese Yen</option>
+                                        <option value="AUD">AUD - Australian Dollar</option>
+                                        <option value="CAD">CAD - Canadian Dollar</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="toCurrency" class="form-label">To Currency</label>
+                                    <select id="toCurrency" class="form-select" required>
+                                        <option value="">Select currency</option>
+                                        <option value="USD">USD - US Dollar</option>
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="GBP">GBP - British Pound</option>
+                                        <option value="JPY">JPY - Japanese Yen</option>
+                                        <option value="AUD">AUD - Australian Dollar</option>
+                                        <option value="CAD">CAD - Canadian Dollar</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-end">
+                                    <button type="button" id="swapCurrencies" class="btn btn-outline-primary w-100">
+                                        <i class="fas fa-exchange-alt"></i> Swap Currencies
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Convert</button>
+                            </div>
+                        </form>
+                        
+                        <div id="conversionResult" class="mt-4 d-none">
+                            <div class="alert alert-success">
+                                <h5 class="alert-heading">Conversion Result</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Original Amount:</strong> <span id="displayOriginalAmount"></span> <span id="displayFromCurrency"></span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Converted Amount:</strong> <span id="displayConvertedAmount"></span> <span id="displayToCurrency"></span></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Exchange Rate:</strong> <span id="displayExchangeRate"></span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Last Updated:</strong> <span id="displayLastUpdated"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button id="newConversion" class="btn btn-outline-secondary me-2">New Conversion</button>
+                                <button id="saveConversion" class="btn btn-outline-success me-2">Save Result</button>
+                                <button id="copyAmount" class="btn btn-outline-info">Copy Amount</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button class="btn btn-success w-100" onclick="convertCurrency()">Convert</button>
-                <p class="mt-3 text-center text-black">Converted Amount: <span id="result">0</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Result Display Section -->
+    <section id="conversionResultDisplay" class="container my-5 d-none">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-check-circle me-2"></i>Conversion Result</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <div class="conversion-box p-4">
+                                    <h4 class="text-muted mb-3">You Converted</h4>
+                                    <div class="amount-display">
+                                        <span class="h2" id="displayOriginalAmount">0.00</span>
+                                        <span class="h4 ms-2" id="displayFromCurrency">USD</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <div class="conversion-box p-4">
+                                    <h4 class="text-muted mb-3">You Receive</h4>
+                                    <div class="amount-display">
+                                        <span class="h2 text-primary" id="displayConvertedAmount">0.00</span>
+                                        <span class="h4 ms-2" id="displayToCurrency">EUR</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="conversion-details p-3 bg-light rounded">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <span class="text-muted">Exchange Rate:</span>
+                                                <span class="fw-bold" id="displayExchangeRate">1 USD = 0.00 EUR</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <span class="text-muted">Last Updated:</span>
+                                                <span id="displayLastUpdated">--:--</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- New Converted Amount Input Section -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="converted-amount-input p-3 bg-light rounded">
+                                    <h5 class="mb-3">Converted Amount</h5>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-lg" id="convertedAmountInput" 
+                                               readonly>
+                                        <button class="btn btn-outline-primary" type="button" id="copyAmount">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <button class="btn btn-outline-secondary" type="button" id="editAmount">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block">Click the copy button to copy the amount or edit to modify it</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-outline-primary me-2" id="newConversion">
+                                    <i class="fas fa-redo me-2"></i>New Conversion
+                                </button>
+                                <button class="btn btn-primary" id="saveConversion">
+                                    <i class="fas fa-save me-2"></i>Save Result
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Add this after the converter section and before the live rates section -->
+    <section id="exchangeSummary" class="container my-5" style="display: none;">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-check-circle me-2"></i>Exchange Summary
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Exchange Details -->
+                            <div class="col-md-6 border-end">
+                                <h4 class="mb-4">Exchange Details</h4>
+                                <div class="exchange-details">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">You Send:</span>
+                                        <span class="fw-bold" id="sendAmount"></span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">You Receive:</span>
+                                        <span class="fw-bold text-success" id="receiveAmount"></span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Exchange Rate:</span>
+                                        <span id="exchangeRate"></span>
+                                    </div>
+                                    <div class="exchange-arrow text-center my-4">
+                                        <div class="currency-box from-currency mb-2" id="fromCurrencyBox">
+                                            USD
+                                        </div>
+                                        <i class="fas fa-arrow-down text-primary"></i>
+                                        <div class="currency-box to-currency mt-2" id="toCurrencyBox">
+                                            EUR
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Fee Breakdown -->
+                            <div class="col-md-6">
+                                <h4 class="mb-4">Fee Breakdown</h4>
+                                <div class="fee-details">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Service Fee:</span>
+                                        <span id="serviceFee"></span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span class="text-muted">Network Fee:</span>
+                                        <span id="networkFee"></span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3 border-top pt-2">
+                                        <span class="text-muted">Total Fees:</span>
+                                        <span class="fw-bold" id="totalFees"></span>
+                                    </div>
+                                    <div class="savings-info bg-light p-3 rounded mt-4">
+                                        <i class="fas fa-piggy-bank text-success me-2"></i>
+                                        <span id="savingsInfo">You save $X.XX compared to banks!</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Time -->
+                        <div class="delivery-info border-top mt-4 pt-4">
+                            <h4 class="mb-3">Delivery Information</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="delivery-time mb-3">
+                                        <i class="fas fa-clock text-primary me-2"></i>
+                                        <span id="deliveryTime">Estimated delivery: 1-2 business days</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="transfer-id">
+                                        <i class="fas fa-fingerprint text-primary me-2"></i>
+                                        <span>Transfer ID: <span id="transferId"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons text-center mt-4">
+                            <button class="btn btn-primary me-2" id="proceedToPayment">
+                                <i class="fas fa-credit-card me-2"></i>Proceed to Payment
+                            </button>
+                            <button class="btn btn-outline-secondary" id="newExchange">
+                                <i class="fas fa-redo me-2"></i>New Exchange
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
     <!-- map -->
-    <section id="map">
+    <section id=" Contact">
         <div class="map">
             <div class="container">
                 <div class="map-content">
@@ -342,16 +642,54 @@
                 </div>
 
                 <div class="form-map">
-                    <form action="">
-                        <div class="from-map-input">
-                            <input type="text" placeholder="Your Name" id="Name" required>
-                            <input type="email" placeholder="Your Email" id="Email" required>
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="Name" name="name" placeholder="Your Name" required>
+                                        <label for="Name">Your Name</label>
+                                        <div class="invalid-feedback">Please enter your name</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="Email" name="email" placeholder="Your Email" required>
+                                        <label for="Email">Your Email</label>
+                                        <div class="invalid-feedback">Please enter a valid email address</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control" id="Phone" name="phone" placeholder="Your Phone Number" required>
+                                        <label for="Phone">Your Phone Number</label>
+                                        <div class="invalid-feedback">Please enter your phone number</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="Subject" name="subject" placeholder="Subject" required>
+                                        <label for="Subject">Subject</label>
+                                        <div class="invalid-feedback">Please enter a subject</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="Message" name="message" placeholder="Message" style="height: 150px" required></textarea>
+                                    <label for="Message">Message</label>
+                                    <div class="invalid-feedback">Please enter your message</div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg px-4">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </div>
                         </div>
-                        <div class="from-map-input2">
-                            <input type="text" placeholder="Subject" id="Subject" required>
-                            <textarea name="Message" id="Message" placeholder="Message" required></textarea>
-                        </div>
-                        <button class="btn-map">Send Message</button>
                     </form>
                 </div>
 
@@ -395,68 +733,40 @@
             </div>
         </div>
     </section>
-    <footer class="bg-dark text-white py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <h5>About NTC</h5>
-                    <p>Your trusted partner for currency exchange services, providing competitive rates and secure
-                        transactions since 2020.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Terms & Conditions</a></li>
-                        <li><a href="#" class="text-white">Privacy Policy</a></li>
-                        <li><a href="#" class="text-white">Exchange Rates</a></li>
-                        <li><a href="#" class="text-white">Currency Calculator</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Newsletter</h5>
-                    <p>Subscribe for daily rate updates and news</p>
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Your email">
-                        <button class="btn btn-primary">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4">
-            <div class="text-center">
-                <p>&copy; 2025 NTC Exchange. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
+    <!-- Login and Signup Modals -->
     <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal fade" id="loginModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Login to Your Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="loginForm" onsubmit="return handleLogin(event)">
+                    <form id="loginForm" novalidate>
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label">Email address</label>
                             <input type="email" class="form-control" id="loginEmail" required>
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="loginPassword" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="loginPassword" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#loginPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="rememberMe">
                             <label class="form-check-label" for="rememberMe">Remember me</label>
                         </div>
-                        <div class="text-center">
+                        <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
                     </form>
                     <div class="mt-3 text-center">
-                        <p>Don't have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal"
-                                data-bs-dismiss="modal">Sign up here</a></p>
+                        <p class="mb-0">Don't have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal" data-bs-dismiss="modal">Sign up</a></p>
                     </div>
                 </div>
             </div>
@@ -464,15 +774,15 @@
     </div>
 
     <!-- Signup Modal -->
-    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal fade" id="signupModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Create an Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="signupForm" onsubmit="return handleSignup(event)">
+                    <form id="signupForm" novalidate>
                         <div class="mb-3">
                             <label for="signupName" class="form-label">Full Name</label>
                             <input type="text" class="form-control" id="signupName" required>
@@ -483,34 +793,495 @@
                         </div>
                         <div class="mb-3">
                             <label for="signupPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="signupPassword" required>
-                        </div>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="signupPassword" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#signupPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-requirements mt-2">
+                                <div class="password-requirement">
+                                    <i class="fas fa-circle"></i> At least 8 characters
+                                </div>
+                                <div class="password-requirement">
+                                    <i class="fas fa-circle"></i> One uppercase letter
+                                </div>
+                                <div class="password-requirement">
+                                    <i class="fas fa-circle"></i> One lowercase letter
+                                </div>
+                                <div class="password-requirement">
+                                    <i class="fas fa-circle"></i> One number
+                                </div>
+                                <div class="password-requirement">
+                                    <i class="fas fa-circle"></i> One special character
+                                </div>
+                </div>
+                </div>
                         <div class="mb-3">
                             <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmPassword" required>
+                    <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#confirmPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="termsAgree" required>
-                            <label class="form-check-label" for="termsAgree">I agree to the Terms and Conditions</label>
+                            <label class="form-check-label" for="termsAgree">
+                                I agree to the <a href="#" target="_blank">Terms and Conditions</a>
+                            </label>
                         </div>
-                        <div class="text-center">
+                        <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Sign Up</button>
                         </div>
                     </form>
                     <div class="mt-3 text-center">
-                        <p>Already have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal"
-                                data-bs-dismiss="modal">Login here</a></p>
+                        <p class="mb-0">Already have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Login</a></p>
                     </div>
                 </div>
+            </div>
+            </div>
+        </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-light py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <!-- Company Info -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">About NTC Exchange</h5>
+                    <p class="mb-3">Your trusted partner in currency exchange, providing secure and reliable financial services worldwide since 2024.</p>
+                    <div class="social-links">
+                        <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="col-md-2 mb-4">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#home" class="text-light text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="#Services" class="text-light text-decoration-none">Services</a></li>
+                        <li class="mb-2"><a href="#converter" class="text-light text-decoration-none">Converter</a></li>
+                        <li class="mb-2"><a href="#Contact" class="text-light text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Services -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="mb-3">Our Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Currency Exchange</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Money Transfer</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Rate Alerts</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Market Analysis</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="mb-3">Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> A108 Adam Street, NY 535022</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +1 5589 55488 55</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> contact@example.com</li>
+                        <li class="mb-2"><i class="fas fa-clock me-2"></i> Mon-Sat: 11AM - 23PM</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="row mt-4 pt-4 border-top">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2024 NTC Exchange. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-light text-decoration-none me-3">Privacy Policy</a>
+                    <a href="#" class="text-light text-decoration-none me-3">Terms of Service</a>
+                    <a href="#" class="text-light text-decoration-none">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chatbot -->
+    <div class="chatbot-container">
+        <!-- Chat Button -->
+        <button class="chat-button" id="chatButton">
+            <i class="fas fa-comments"></i>
+        </button>
+
+        <!-- Chat Window -->
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h5><i class="fas fa-robot me-2"></i>NTC Assistant</h5>
+                <button class="close-chat" id="closeChat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be added here dynamically -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <button id="sendMessage">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
     </div>
 
+    <script>
+        // Exchange rates data
+        const exchangeRates = {
+            USD: { rate: 1, change: 0, chart: [] },
+            EUR: { rate: 0.87736, change: -0.27, chart: [] },
+            GBP: { rate: 0.75133, change: 0.11, chart: [] },
+            JPY: { rate: 143.71, change: 0.53, chart: [] },
+            CAD: { rate: 1.3879, change: 0.16, chart: [] },
+            AUD: { rate: 1.5123, change: -0.05, chart: [] }
+        };
+
+        // Function to generate random rate change
+        function generateRandomChange() {
+            return (Math.random() * 0.5 - 0.25).toFixed(2);
+        }
+
+        // Function to update exchange rates table
+        function updateExchangeRatesTable() {
+            const tbody = document.getElementById('exchange-rates-body');
+            tbody.innerHTML = '';
+
+            // Map currencies to their corresponding images
+            const currencyImages = {
+                USD: 'images.png',
+                EUR: 'download.png',
+                GBP: 'download (1).png',
+                JPY: 'images.jpeg',
+                CAD: 'download.jpeg',
+                AUD: 'images (1).jpeg'
+            };
+
+            Object.entries(exchangeRates).forEach(([currency, data]) => {
+                // Generate new random change
+                const newChange = parseFloat(generateRandomChange());
+                const newRate = currency === 'USD' ? 1 : (data.rate * (1 + newChange/100)).toFixed(5);
+                
+                // Update the exchange rates data
+                exchangeRates[currency].change = newChange;
+                exchangeRates[currency].rate = parseFloat(newRate);
+
+                const row = document.createElement('tr');
+                const changeClass = newChange >= 0 ? 'text-success' : 'text-danger';
+                const changeSymbol = newChange >= 0 ? '+' : '';
+                const imagePath = currencyImages[currency] || 'images.png';
+
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="imgs/${imagePath}" 
+                                 alt="${currency} Flag" 
+                                 class="currency-flag me-2"
+                                 style="width: 24px; height: 16px; object-fit: cover;">
+                            <span>${currency}</span>
+                        </div>
+                    </td>
+                    <td>${newRate}</td>
+                    <td><span class="${changeClass}">${changeSymbol}${newChange}%</span></td>
+                    <td>
+                        <canvas width="60" height="20" data-chart="${currency.toLowerCase()}"></canvas>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Update last updated timestamp
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+        }
+
+        // Function to handle currency conversion
+        function convertCurrency(currency) {
+            const fromCurrency = document.getElementById('fromCurrency');
+            const toCurrency = document.getElementById('toCurrency');
+            
+            // Set the selected currency as the "from" currency
+            fromCurrency.value = currency;
+            
+            // Trigger conversion
+            convertAmount();
+        }
+
+        // Function to swap currencies
+        function swapCurrencies() {
+            const fromCurrency = document.getElementById('fromCurrency');
+            const toCurrency = document.getElementById('toCurrency');
+            const temp = fromCurrency.value;
+            fromCurrency.value = toCurrency.value;
+            toCurrency.value = temp;
+            convertAmount();
+        }
+
+        // Function to convert amount
+        function convertAmount() {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
+
+            const fromRate = exchangeRates[fromCurrency].rate;
+            const toRate = exchangeRates[toCurrency].rate;
+
+            const convertedAmount = (amount * toRate) / fromRate;
+            const exchangeRate = toRate / fromRate;
+
+            // Show the conversion result section
+            const conversionResult = document.getElementById('conversionResultDisplay');
+            conversionResult.classList.remove('d-none');
+
+            // Update the display elements with proper number formatting
+            document.getElementById('displayOriginalAmount').textContent = amount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            document.getElementById('displayFromCurrency').textContent = fromCurrency;
+            document.getElementById('displayConvertedAmount').textContent = convertedAmount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            document.getElementById('displayToCurrency').textContent = toCurrency;
+            document.getElementById('displayExchangeRate').textContent = `1 ${fromCurrency} = ${exchangeRate.toFixed(5)} ${toCurrency}`;
+            document.getElementById('displayLastUpdated').textContent = new Date().toLocaleTimeString();
+            
+            // Update the converted amount input with proper formatting
+            document.getElementById('convertedAmountInput').value = convertedAmount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            // Also update the conversion result section
+            document.getElementById('sendAmount').textContent = `${amount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })} ${fromCurrency}`;
+            document.getElementById('receiveAmount').textContent = `${convertedAmount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })} ${toCurrency}`;
+            document.getElementById('exchangeRate').textContent = `1 ${fromCurrency} = ${exchangeRate.toFixed(5)} ${toCurrency}`;
+            document.getElementById('fromCurrencyBox').textContent = fromCurrency;
+            document.getElementById('toCurrencyBox').textContent = toCurrency;
+        }
+
+        // Add event listener for the convert button
+        document.getElementById('converterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            convertAmount();
+        });
+
+        // Add event listener for the swap currencies button
+        document.getElementById('swapCurrencies').addEventListener('click', swapCurrencies);
+
+        // Add event listener for the new conversion button
+        document.getElementById('newConversion').addEventListener('click', function() {
+            document.getElementById('conversionResultDisplay').classList.add('d-none');
+            document.getElementById('amount').value = '';
+            document.getElementById('fromCurrency').value = '';
+            document.getElementById('toCurrency').value = '';
+        });
+
+        // Add event listener for the copy amount button
+        document.getElementById('copyAmount').addEventListener('click', function() {
+            const convertedAmount = document.getElementById('convertedAmountInput');
+            convertedAmount.select();
+            document.execCommand('copy');
+            
+            // Show a toast notification
+            const toast = document.createElement('div');
+            toast.className = 'toast align-items-center text-white bg-success border-0';
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Amount copied to clipboard!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            document.querySelector('.toast-container').appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            updateExchangeRatesTable();
+            
+            // Update rates every 5 seconds
+            setInterval(updateExchangeRatesTable, 5000);
+        });
+    </script>
+
+    <script>
+        // Initialize EmailJS
+        (function() {
+            try {
+                emailjs.init("oXABLux_QLfki5QeH");
+                console.log("EmailJS initialized successfully");
+            } catch (error) {
+                console.error("EmailJS initialization failed:", error);
+            }
+        })();
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                to_name: "NTC Support", // Add recipient name
+                from_name: document.getElementById('Name').value,
+                from_email: document.getElementById('Email').value,
+                phone_number: document.getElementById('Phone').value,
+                subject: document.getElementById('Subject').value,
+                message: document.getElementById('Message').value,
+                reply_to: document.getElementById('Email').value
+            };
+
+            // Log the form data for debugging
+            console.log("Sending form data:", formData);
+
+            // Validate form data
+            if (!formData.from_name || !formData.from_email || !formData.phone_number || !formData.subject || !formData.message) {
+                showToast('Please fill in all fields', 'error');
+                return;
+            }
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.from_email)) {
+                showToast('Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Show loading state
+            const submitButton = document.querySelector('.btn-map');
+            const originalText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+
+            // Send email using EmailJS with template parameters
+            emailjs.send("service_u8bilkm", "template_hx43dic", {
+                to_name: formData.to_name,
+                from_name: formData.from_name,
+                from_email: formData.from_email,
+                phone_number: formData.phone_number,
+                subject: formData.subject,
+                message: formData.message,
+                reply_to: formData.reply_to
+            }, "oXABLux_QLfki5QeH")
+            .then(function(response) {
+                console.log('Email sent successfully:', response);
+                showToast('Message sent successfully! We will get back to you soon.', 'success');
+                document.getElementById('contactForm').reset();
+            })
+            .catch(function(error) {
+                console.error('Email sending failed:', error);
+                let errorMessage = 'Failed to send message. ';
+                
+                // Add more specific error messages based on the error type
+                if (error.status === 422) {
+                    errorMessage += 'Please check your email address and try again.';
+                } else if (error.status === 429) {
+                    errorMessage += 'Too many requests. Please try again later.';
+                } else {
+                    errorMessage += error.text || 'Please try again or contact us directly.';
+                }
+                
+                showToast(errorMessage, 'error');
+            })
+            .finally(function() {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            });
+        });
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            toast.style.position = 'fixed';
+            toast.style.top = '20px';
+            toast.style.right = '20px';
+            toast.style.zIndex = '9999';
+            
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast, {
+                autohide: true,
+                delay: 5000
+            });
+            bsToast.show();
+
+            // Remove toast after it's hidden
+            toast.addEventListener('hidden.bs.toast', function () {
+                toast.remove();
+            });
+        }
+    </script>
+
+    <!-- Add EmailJS script -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS with your public key
+        (function() {
+            emailjs.init("oXABLux_QLfki5QeH");
+            console.log("EmailJS initialized");
+        })();
+    </script>
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script src="./js/scrpit.js"></script>
+    <!-- Load modules in correct order -->
+    <script type="module" src="./js/config.js"></script>
+    <script type="module" src="./js/utils.js"></script>
+    <script type="module" src="./js/api.js"></script>
+    <script type="module" src="./js/script.js"></script>
+    <script type="module" src="./js/main.js"></script>
+    <script type="module">
+        import authService from './js/auth.js';
+        // The auth service will automatically initialize
+    </script>
+    <script src="./js/login.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/contact.js"></script>
+    <script type="module" src="js/chatbot.js"></script>
+
+    <!-- Add Chart.js before your custom scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+    <script src="js/exchange-chart.js"></script>
 </body>
 
-</html>
+</html></html>

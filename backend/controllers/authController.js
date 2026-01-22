@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../utils/emailService');
+const ActivityService = require('../services/activityService');
 
 // Register User
 exports.register = async (req, res) => {
@@ -75,13 +76,17 @@ exports.login = async (req, res) => {
             { expiresIn: '30d' }
         );
 
+        // Process login activity rewards
+        await ActivityService.processLoginReward(user._id);
+
         res.json({
             token,
             user: {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                balance: user.balance
+                balance: user.balance,
+                activityMetrics: user.activityMetrics
             }
         });
     } catch (error) {

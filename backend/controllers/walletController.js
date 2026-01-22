@@ -1,16 +1,26 @@
 const User = require('../models/User');
 const Transaction = require('../models/Transaction');
+const mongoose = require('mongoose');
+const ActivityService = require('../services/activityService');
 
-// Get user wallet info
+// Get wallet info with real-time balances
 exports.getWalletInfo = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id)
-            .select('balances')
-            .lean();
+        const user = await User.findById(req.user.id);
+        const transactions = await Transaction.find({ 
+            user: req.user.id 
+        })
+        .sort({ createdAt: -1 })
+        .limit(10);
 
         res.json({
             success: true,
-            balances: user.balances
+            data: {
+                balance: user.balance,
+                pendingBalance: user.pendingBalance,
+                transactions: transactions,
+                lastUpdated: new Date()
+            }
         });
     } catch (error) {
         res.status(500).json({
@@ -53,65 +63,149 @@ exports.getTransactions = async (req, res) => {
 
 // Create new transaction
 exports.createTransaction = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
-        const { type, amount, fromCurrency, toCurrency, paymentMethod } = req.body;
-        const userId = req.user.id;
+        const { type, amount, currency, description, toCurrency } = req.body;
+        const user = await User.findById(req.user.id).session(session);
 
-        // Start session for transaction
-        const session = await mongoose.startSession();
-        session.startTransaction();
+        // Validate amount
+        if (amount <= 0) {
+            throw new Error('Amount must be greater than 0');
+        }
 
-        try {
-            const user = await User.findById(userId).session(session);
+        // Create transaction
+        const transaction = new Transaction({
+            user: user._id,
+            type,
+            amount,
+            currency,
+            description,
+            toCurrency,
+            status: 'pending'
+        });
 
-            // Validate balance for withdrawals and transfers
-            if (type !== 'deposit') {
-                if (user.balances[fromCurrency] < amount) {
+        // Handle different transaction types
+        switch (type) {
+            case 'deposit':
+                await user.updateBalance(currency, amount, true);
+                break;
+
+            case 'withdrawal':
+                // Check available balance
+                if (user.balances.get(currency) < amount) {
                     throw new Error('Insufficient balance');
                 }
-            }
+                await user.updateBalance(currency, -amount);
+                break;
 
-            // Create transaction record
-            const transaction = await Transaction.create([{
-                user: userId,
-                type,
-                amount,
-                fromCurrency,
-                toCurrency,
-                paymentMethod,
-                status: 'completed'
-            }], { session });
-
-            // Update user balance
-            if (type === 'deposit') {
-                user.balances[toCurrency] += amount;
-            } else if (type === 'withdrawal') {
-                user.balances[fromCurrency] -= amount;
-            } else if (type === 'transfer') {
-                const exchangeRate = await getExchangeRate(fromCurrency, toCurrency);
-                user.balances[fromCurrency] -= amount;
-                user.balances[toCurrency] += amount * exchangeRate;
-            }
-
-            await user.save({ session });
-            await session.commitTransaction();
-
-            res.json({
-                success: true,
-                transaction: transaction[0],
-                newBalances: user.balances
-            });
-        } catch (error) {
-            await session.abortTransaction();
-            throw error;
-        } finally {
-            session.endSession();
+            case 'exchange':
+                if (!toCurrency) {
+                    throw new Error('Target currency is required for exchange');
+                }
+                // Get exchange rate (implement your own exchange rate service)
+                const rate = await getExchangeRate(currency, toCurrency);
+                const convertedAmount = amount * rate;
+                
+                // Check if user has sufficient balance
+                if (user.balances.get(currency) < amount) {
+                    throw new Error('Insufficient balance');
+                }
+                
+                // Update balances
+                await user.updateBalance(currency, -amount);
+                await user.updateBalance(toCurrency, convertedAmount);
+                
+                // Update transaction with conversion details
+                transaction.metadata = {
+                    exchangeRate: rate,
+                    convertedAmount
+                };
+                break;
         }
+
+        // Save transaction
+        await transaction.save({ session });
+
+        // Update user's transaction count and last transaction date
+        user.transactionCount += 1;
+        user.lastTransactionDate = new Date();
+        await user.save({ session });
+
+        // Commit transaction
+        await session.commitTransaction();
+
+        res.json({
+            success: true,
+            data: {
+                transaction,
+                newBalances: Object.fromEntries(user.balances),
+                newPendingBalances: Object.fromEntries(user.pendingBalances)
+            }
+        });
     } catch (error) {
+        await session.abortTransaction();
         res.status(400).json({
             success: false,
             message: error.message
         });
+    } finally {
+        session.endSession();
+    }
+};
+
+// Process pending transactions (should be called by admin or automated system)
+exports.processPendingTransaction = async (req, res) => {
+    const { transactionId, approved } = req.body;
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const transaction = await Transaction.findById(transactionId).session(session);
+        const user = await User.findById(transaction.user).session(session);
+
+        if (transaction.status !== 'pending') {
+            throw new Error('Transaction is not pending');
+        }
+
+        if (approved) {
+            // Move amount from pending to actual balance for deposits
+            if (transaction.type === 'deposit') {
+                await user.updateBalance(transaction.currency, -transaction.amount, true); // Remove from pending
+                await user.updateBalance(transaction.currency, transaction.amount); // Add to actual balance
+            }
+            transaction.status = 'completed';
+        } else {
+            // Reverse the transaction
+            if (transaction.type === 'deposit') {
+                await user.updateBalance(transaction.currency, -transaction.amount, true);
+            } else if (transaction.type === 'withdrawal') {
+                await user.updateBalance(transaction.currency, transaction.amount);
+            }
+            transaction.status = 'cancelled';
+        }
+
+        await transaction.save({ session });
+        await user.save({ session });
+        await session.commitTransaction();
+
+        res.json({
+            success: true,
+            data: {
+                transaction,
+                newBalances: Object.fromEntries(user.balances),
+                newPendingBalances: Object.fromEntries(user.pendingBalances)
+            }
+        });
+    } catch (error) {
+        await session.abortTransaction();
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    } finally {
+        session.endSession();
     }
 };
 
@@ -168,4 +262,322 @@ async function getExchangeRates() {
             USD: 1
         };
     }
-} 
+}
+
+exports.createExchange = async (req, res) => {
+    try {
+        // ... existing exchange logic ...
+        
+        // Process exchange activity rewards
+        await ActivityService.processExchangeActivity(
+            req.user.id,
+            amount,
+            fromCurrency,
+            toCurrency
+        );
+        
+        res.json({
+            success: true,
+            transaction,
+            newBalance: user.balance
+        });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+// Handle deposit
+exports.deposit = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const { amount, currency, paymentMethod } = req.body;
+        const user = await User.findById(req.user.id).session(session);
+
+        // Validate amount
+        if (amount <= 0) {
+            throw new Error('Amount must be greater than 0');
+        }
+
+        // Create deposit transaction
+        const transaction = new Transaction({
+            user: user._id,
+            type: 'deposit',
+            amount: amount,
+            currency: currency,
+            paymentMethod: paymentMethod,
+            balanceAfter: user.balance + amount,
+            status: 'pending',
+            description: `Deposit via ${paymentMethod}`
+        });
+
+        // Update user's pending balance
+        user.pendingBalance += amount;
+        
+        await transaction.save({ session });
+        await user.save({ session });
+        await session.commitTransaction();
+
+        res.json({
+            success: true,
+            data: {
+                transaction: transaction,
+                newBalance: user.balance,
+                pendingBalance: user.pendingBalance
+            }
+        });
+    } catch (error) {
+        await session.abortTransaction();
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    } finally {
+        session.endSession();
+    }
+};
+
+// Handle withdrawal
+exports.withdraw = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const { amount, currency, paymentMethod, bankAccount } = req.body;
+        const user = await User.findById(req.user.id).session(session);
+
+        // Validate amount and balance
+        if (amount <= 0) {
+            throw new Error('Amount must be greater than 0');
+        }
+        if (user.balance < amount) {
+            throw new Error('Insufficient balance');
+        }
+
+        // Create withdrawal transaction
+        const transaction = new Transaction({
+            user: user._id,
+            type: 'withdrawal',
+            amount: -amount, // Negative amount for withdrawal
+            currency: currency,
+            paymentMethod: paymentMethod,
+            balanceAfter: user.balance - amount,
+            status: 'pending',
+            description: `Withdrawal to ${bankAccount}`,
+            metadata: { bankAccount }
+        });
+
+        // Update user's balance immediately for withdrawals
+        user.balance -= amount;
+        
+        await transaction.save({ session });
+        await user.save({ session });
+        await session.commitTransaction();
+
+        res.json({
+            success: true,
+            data: {
+                transaction: transaction,
+                newBalance: user.balance
+            }
+        });
+    } catch (error) {
+        await session.abortTransaction();
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    } finally {
+        session.endSession();
+    }
+};
+
+// Process pending transactions (admin only)
+exports.processTransaction = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const { transactionId, approved } = req.body;
+        const transaction = await Transaction.findById(transactionId).session(session);
+        const user = await User.findById(transaction.user).session(session);
+
+        if (transaction.status !== 'pending') {
+            throw new Error('Transaction is not pending');
+        }
+
+        if (approved) {
+            if (transaction.type === 'deposit') {
+                // Move amount from pending to actual balance
+                user.pendingBalance -= transaction.amount;
+                user.balance += transaction.amount;
+                transaction.status = 'completed';
+            }
+        } else {
+            if (transaction.type === 'deposit') {
+                // Cancel pending deposit
+                user.pendingBalance -= transaction.amount;
+            } else if (transaction.type === 'withdrawal') {
+                // Refund failed withdrawal
+                user.balance += Math.abs(transaction.amount);
+            }
+            transaction.status = 'cancelled';
+        }
+
+        await transaction.save({ session });
+        await user.save({ session });
+        await session.commitTransaction();
+
+        res.json({
+            success: true,
+            data: {
+                transaction: transaction,
+                newBalance: user.balance,
+                pendingBalance: user.pendingBalance
+            }
+        });
+    } catch (error) {
+        await session.abortTransaction();
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    } finally {
+        session.endSession();
+    }
+};
+
+exports.getBalance = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+            .select('balance');
+
+        res.json({
+            success: true,
+            balance: user.balance
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+exports.addMoney = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const { amount } = req.body;
+        
+        // Validate amount
+        if (!amount || amount <= 0) {
+            throw new Error('Invalid amount');
+        }
+
+        const user = await User.findById(req.user.id).session(session);
+        
+        // Update user's balance
+        const newBalance = await user.updateBalance(amount);
+
+        // Create transaction record
+        const transaction = new Transaction({
+            user: user._id,
+            type: 'deposit',
+            amount: amount,
+            balanceAfter: newBalance,
+            status: 'completed',
+            description: 'Deposit to wallet'
+        });
+
+        await transaction.save({ session });
+        await session.commitTransaction();
+
+        res.json({
+            success: true,
+            message: 'Money added successfully',
+            newBalance: newBalance,
+            transaction: transaction
+        });
+    } catch (error) {
+        await session.abortTransaction();
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    } finally {
+        session.endSession();
+    }
+};
+
+exports.withdrawMoney = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const { amount } = req.body;
+        
+        // Validate amount
+        if (!amount || amount <= 0) {
+            throw new Error('Invalid amount');
+        }
+
+        const user = await User.findById(req.user.id).session(session);
+        
+        // Check if user has sufficient balance
+        if (user.balance < amount) {
+            throw new Error('Insufficient balance');
+        }
+
+        // Update user's balance (negative amount for withdrawal)
+        const newBalance = await user.updateBalance(-amount);
+
+        // Create transaction record
+        const transaction = new Transaction({
+            user: user._id,
+            type: 'withdrawal',
+            amount: -amount,
+            balanceAfter: newBalance,
+            status: 'completed',
+            description: 'Withdrawal from wallet'
+        });
+
+        await transaction.save({ session });
+        await session.commitTransaction();
+
+        res.json({
+            success: true,
+            message: 'Money withdrawn successfully',
+            newBalance: newBalance,
+            transaction: transaction
+        });
+    } catch (error) {
+        await session.abortTransaction();
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    } finally {
+        session.endSession();
+    }
+};
+
+exports.getTransactionHistory = async (req, res) => {
+    try {
+        const transactions = await Transaction.find({ user: req.user.id })
+            .sort({ timestamp: -1 })
+            .limit(10);
+
+        res.json({
+            success: true,
+            transactions: transactions
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}; 

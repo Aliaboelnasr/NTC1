@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="dashboard-body">
     <!-- Sidebar -->
@@ -23,16 +24,16 @@
                     <a href="#overview"><i class="fas fa-home"></i> Overview</a>
                 </li>
                 <li>
-                    <a href="#transactions"><i class="fas fa-history"></i> Transactions</a>
+                    <a href="transactions.html"><i class="fas fa-history"></i> Transactions</a>
                 </li>
                 <li>
-                    <a href="#exchange"><i class="fas fa-exchange-alt"></i> Exchange</a>
+                    <a href="exchange.html"><i class="fas fa-exchange-alt"></i> Exchange</a>
                 </li>
                 <li>
-                    <a href="#wallet"><i class="fas fa-wallet"></i> Wallet</a>
+                    <a href="wallet.html"><i class="fas fa-wallet"></i> Wallet</a>
                 </li>
                 <li>
-                    <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
                 </li>
                 <li>
                     <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
@@ -50,23 +51,12 @@
                     </button>
                     <h2>Dashboard</h2>
                 </div>
-                <div class="nav-right">
-                    <div class="user-info dropdown">
-                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle"></i>
-                            <span id="userName">User Name</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="handleLogout()">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
             </nav>
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">
                 <!-- Overview Section -->
-                <section id="overview" class="active-section">
+                <section id="overview" class="dashboard-section active-section">
                     <div class="row">
                         <!-- Stats Cards -->
                         <div class="col-md-3 mb-4">
@@ -76,7 +66,7 @@
                                 </div>
                                 <div class="stats-info">
                                     <h4>Total Balance</h4>
-                                    <p>$25,000</p>
+                                    <p>$,000</p>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +77,7 @@
                                 </div>
                                 <div class="stats-info">
                                     <h4>Total Exchanges</h4>
-                                    <p>156</p>
+                                    <p>20</p>
                                 </div>
                             </div>
                         </div>
@@ -296,42 +286,50 @@
                 </section>
 
                 <!-- Wallet Section -->
-                <section id="wallet" class="dashboard-section">
-                    <div class="container">
+                <section id="wallet" class="dashboard-section" style="display: none;">
+                    <div class="container-fluid">
+                        <!-- Page Header -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h2 class="section-title">My Wallet</h2>
+                                <p class="text-muted">Manage your funds and transactions</p>
+                            </div>
+                        </div>
+
                         <!-- Balance Cards -->
                         <div class="row mb-4">
-                            <div class="col-md-4">
+                            <div class="col-lg-4 col-md-6 mb-3">
                                 <div class="balance-card primary">
                                     <div class="balance-icon">
                                         <i class="fas fa-dollar-sign"></i>
                                     </div>
                                     <div class="balance-info">
                                         <h3>USD Balance</h3>
-                                        <h2>$<span id="usdBalance">25,000.00</span></h2>
+                                        <h2>$<span id="wallet-usdBalance">0.00</span></h2>
                                         <p>Primary Currency</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4 col-md-6 mb-3">
                                 <div class="balance-card secondary">
                                     <div class="balance-icon">
                                         <i class="fas fa-euro-sign"></i>
                                     </div>
                                     <div class="balance-info">
                                         <h3>EUR Balance</h3>
-                                        <h2>€<span id="eurBalance">21,250.00</span></h2>
+                                        <h2>€<span id="wallet-eurBalance">0.00</span></h2>
                                         <p>Secondary Currency</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4 col-md-6 mb-3">
                                 <div class="balance-card tertiary">
                                     <div class="balance-icon">
                                         <i class="fas fa-pound-sign"></i>
                                     </div>
                                     <div class="balance-info">
                                         <h3>GBP Balance</h3>
-                                        <h2>£<span id="gbpBalance">18,750.00</span></h2>
+                                        <h2>£<span id="wallet-gbpBalance">0.00</span></h2>
                                         <p>Secondary Currency</p>
                                     </div>
                                 </div>
@@ -341,42 +339,40 @@
                         <!-- Quick Actions -->
                         <div class="row mb-4">
                             <div class="col-12">
-                                <div class="quick-actions">
-                                    <button class="action-btn deposit" onclick="showDepositModal()">
-                                        <i class="fas fa-plus"></i>
-                                        Deposit
-                                    </button>
-                                    <button class="action-btn withdraw" onclick="showWithdrawModal()">
-                                        <i class="fas fa-minus"></i>
-                                        Withdraw
-                                    </button>
-                                    <button class="action-btn transfer" onclick="showTransferModal()">
-                                        <i class="fas fa-exchange-alt"></i>
-                                        Transfer
-                                    </button>
-                                    <button class="action-btn history">
-                                        <i class="fas fa-history"></i>
-                                        History
-                                    </button>
+                                <div class="content-card">
+                                    <div class="card-body">
+                                        <h4 class="mb-3">Quick Actions</h4>
+                                        <div class="quick-actions-grid">
+                                            <button class="action-btn deposit" data-bs-toggle="modal" data-bs-target="#depositModal">
+                                                <i class="fas fa-plus"></i>
+                                                Deposit Funds
+                                            </button>
+                                            <button class="action-btn withdraw" data-bs-toggle="modal" data-bs-target="#withdrawModal">
+                                                <i class="fas fa-minus"></i>
+                                                Withdraw Funds
+                                            </button>
+                                            <button class="action-btn transfer" data-bs-toggle="modal" data-bs-target="#transferModal">
+                                                <i class="fas fa-exchange-alt"></i>
+                                                Transfer Funds
+                                            </button>
+                                            <button class="action-btn history" onclick="navigateToSection('transactions')">
+                                                <i class="fas fa-history"></i>
+                                                View History
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Transaction History -->
+                        <!-- Recent Activity -->
                         <div class="content-card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h3>Recent Transactions</h3>
-                                <div class="transaction-filters">
-                                    <select class="form-select" id="transactionType">
-                                        <option value="all">All Transactions</option>
-                                        <option value="deposit">Deposits</option>
-                                        <option value="withdrawal">Withdrawals</option>
-                                        <option value="transfer">Transfers</option>
-                                    </select>
-                                </div>
+                                <h5 class="mb-0">Recent Activity</h5>
+                                <button class="btn btn-sm btn-outline-primary" onclick="navigateToSection('transactions')">View All</button>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover mb-0">
                                     <thead>
                                         <tr>
                                             <th>Date</th>
@@ -384,181 +380,317 @@
                                             <th>Amount</th>
                                             <th>Currency</th>
                                             <th>Status</th>
-                                            <th>Details</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="transactionHistory">
-                                        <!-- Transactions will be loaded here -->
+                                    <tbody id="recentWalletActivity">
+                                        <tr><td colspan="5" class="text-center text-muted py-3">Loading activity...</td></tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                    <!-- Deposit Modal -->
-                    <div class="modal fade" id="depositModal" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Deposit Funds</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="depositForm">
-                                        <div class="mb-3">
-                                            <label>Select Currency</label>
-                                            <select class="form-select" id="depositCurrency">
-                                                <option value="USD">USD</option>
-                                                <option value="EUR">EUR</option>
-                                                <option value="GBP">GBP</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>Amount</label>
-                                            <input type="number" class="form-control" id="depositAmount" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>Payment Method</label>
-                                            <div class="payment-methods">
-                                                <div class="payment-method">
-                                                    <input type="radio" name="paymentMethod" value="card" id="cardMethod">
-                                                    <label for="cardMethod">
-                                                        <i class="fas fa-credit-card"></i>
-                                                        Card
-                                                    </label>
+                <!-- Exchange Section -->
+                <section id="exchange" class="dashboard-section" style="display: none;">
+                    <div class="container">
+                        <!-- Page Header -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h2 class="section-title">Currency Exchange</h2>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Exchange Form -->
+                            <div class="col-lg-7 mb-4">
+                                <div class="content-card">
+                                    <div class="card-body">
+                                        <h4 class="mb-4">Convert Currency</h4>
+                                        <form id="exchangeForm">
+                                            <!-- From Currency -->
+                                            <div class="mb-4">
+                                                <label for="exchangeFromCurrency" class="form-label">From</label>
+                                                <div class="input-group">
+                                                    <select class="form-select" id="exchangeFromCurrency" style="max-width: 120px;">
+                                                        <option value="USD">USD</option>
+                                                        <option value="EUR">EUR</option>
+                                                        <option value="GBP">GBP</option>
+                                                    </select>
+                                                    <input type="number" step="0.01" class="form-control" id="exchangeFromAmount" placeholder="0.00" required>
                                                 </div>
-                                                <div class="payment-method">
-                                                    <input type="radio" name="paymentMethod" value="bank" id="bankMethod">
-                                                    <label for="bankMethod">
-                                                        <i class="fas fa-university"></i>
-                                                        Bank
-                                                    </label>
-                                                </div>
-                                                <div class="payment-method">
-                                                    <input type="radio" name="paymentMethod" value="crypto" id="cryptoMethod">
-                                                    <label for="cryptoMethod">
-                                                        <i class="fab fa-bitcoin"></i>
-                                                        Crypto
-                                                    </label>
+                                                <div class="form-text mt-1">
+                                                    Available: <span id="exchangeAvailableBalance">0.00</span> <span id="exchangeAvailableCurrency">USD</span>
+                                                    <button type="button" class="btn btn-link btn-sm p-0 ms-1" id="setMaxAmountBtn">Use Max</button>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100">Proceed to Payment</button>
-                                    </form>
+
+                                            <!-- Swap Button -->
+                                            <div class="text-center mb-3">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" id="swapCurrenciesBtn">
+                                                    <i class="fas fa-sync-alt"></i> Swap
+                                                </button>
+                                            </div>
+
+                                            <!-- To Currency -->
+                                            <div class="mb-4">
+                                                <label for="exchangeToCurrency" class="form-label">To</label>
+                                                <div class="input-group">
+                                                     <select class="form-select" id="exchangeToCurrency" style="max-width: 120px;">
+                                                        <option value="EUR">EUR</option>
+                                                        <option value="USD">USD</option>
+                                                        <option value="GBP">GBP</option>
+                                                    </select>
+                                                    <input type="number" step="0.01" class="form-control" id="exchangeToAmount" placeholder="0.00" readonly disabled>
+                                                </div>
+                                            </div>
+
+                                            <!-- Exchange Rate Info -->
+                                            <div class="exchange-rate-info mb-4 p-3">
+                                                <p class="mb-1"><strong>Exchange Rate:</strong> <span id="exchangeRateDisplay">Fetching...</span></p>
+                                                <p class="mb-0 text-muted"><small>Rates are indicative and may change.</small></p>
+                                            </div>
+
+                                            <!-- Submit Button -->
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-primary btn-lg" id="confirmExchangeBtn">
+                                                    Confirm Exchange
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Current Balances & Rates -->
+                            <div class="col-lg-5 mb-4">
+                                <div class="content-card mb-4">
+                                     <div class="card-header">
+                                        <h5 class="mb-0">Your Balances</h5>
+                                     </div>
+                                     <ul class="list-group list-group-flush" id="exchangeBalancesList">
+                                         <li class="list-group-item d-flex justify-content-between align-items-center">
+                                             <span>🇺🇸 USD</span>
+                                             <strong id="balance-usd">0.00</strong>
+                                         </li>
+                                         <li class="list-group-item d-flex justify-content-between align-items-center">
+                                             <span>🇪🇺 EUR</span>
+                                             <strong id="balance-eur">0.00</strong>
+                                         </li>
+                                         <li class="list-group-item d-flex justify-content-between align-items-center">
+                                             <span>🇬🇧 GBP</span>
+                                             <strong id="balance-gbp">0.00</strong>
+                                         </li>
+                                     </ul>
+                                </div>
+
+                                <div class="content-card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Live Rates (vs USD)</h5>
+                                    </div>
+                                    <ul class="list-group list-group-flush" id="exchangeLiveRates">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>EUR</span>
+                                            <span id="rate-eur">Fetching...</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>GBP</span>
+                                            <span id="rate-gbp">Fetching...</span>
+                                        </li>
+                                        <!-- Add more rates if needed -->
+                                    </ul>
+                                     <div class="card-footer text-muted text-center">
+                                        <small>Rates updated periodically</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                    <!-- Withdraw Modal -->
-                    <div class="modal fade" id="withdrawModal" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Withdraw Funds</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="withdrawForm">
-                                        <div class="mb-3">
-                                            <label>Select Currency</label>
-                                            <select class="form-select" id="withdrawCurrency">
-                                                <option value="USD">USD</option>
-                                                <option value="EUR">EUR</option>
-                                                <option value="GBP">GBP</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>Amount</label>
-                                            <input type="number" class="form-control" id="withdrawAmount" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>Withdrawal Method</label>
-                                            <select class="form-select" id="withdrawMethod">
-                                                <option value="bank">Bank Transfer</option>
-                                                <option value="card">Card Refund</option>
-                                                <option value="crypto">Cryptocurrency</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100">Request Withdrawal</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Transfer Modal -->
-                    <div class="modal fade" id="transferModal" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Transfer Funds</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="transferForm">
-                                        <div class="mb-3">
-                                            <label>From Currency</label>
-                                            <select class="form-select" id="fromCurrency">
-                                                <option value="USD">USD</option>
-                                                <option value="EUR">EUR</option>
-                                                <option value="GBP">GBP</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>To Currency</label>
-                                            <select class="form-select" id="toCurrency">
-                                                <option value="EUR">EUR</option>
-                                                <option value="USD">USD</option>
-                                                <option value="GBP">GBP</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>Amount</label>
-                                            <input type="number" class="form-control" id="transferAmount" required>
-                                        </div>
-                                        <div class="exchange-rate-info">
-                                            <p>Exchange Rate: <span id="exchangeRate">1 USD = 0.85 EUR</span></p>
-                                            <p>You'll receive: <span id="receiveAmount">0.00</span></p>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100">Confirm Transfer</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Settings Section -->
+                <section id="settings" class="dashboard-section" style="display: none;">
+                    <div class="container">
+                        <h2 class="section-title">Settings</h2>
+                        <p>Settings content goes here...</p>
                     </div>
                 </section>
             </div>
         </div>
     </div>
 
-    <!-- Add Money Modal -->
-    <div class="modal fade" id="addMoneyModal" tabindex="-1">
-        <div class="modal-dialog">
+    <!-- Modals -->
+    <!-- Deposit Modal -->
+    <div class="modal fade" id="depositModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Money</h5>
+                    <h5 class="modal-title">Deposit Funds</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="add-money-form">
+                <form id="depositForm">
                     <div class="modal-body">
-                        <!-- Add form fields here -->
+                        <div class="mb-3">
+                            <label for="depositCurrency" class="form-label">Currency</label>
+                            <select class="form-select" id="depositCurrency">
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="depositAmount" class="form-label">Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="depositCurrencySymbol">$</span>
+                                <input type="number" step="0.01" class="form-control" id="depositAmount" placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="depositMethod" class="form-label">Payment Method</label>
+                            <select class="form-select" id="depositMethod">
+                                <option value="card">Credit/Debit Card</option>
+                                <option value="bank">Bank Transfer</option>
+                                <option value="crypto">Cryptocurrency</option>
+                            </select>
+                        </div>
+                        <!-- Payment Details (shown/hidden based on selected method) -->
+                        <div id="paymentDetails"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Money</button>
+                        <button type="submit" class="btn btn-primary">Proceed to Payment</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Similar modals for Withdraw, Transfer, and Exchange -->
+    <!-- Withdraw Modal -->
+    <div class="modal fade" id="withdrawModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Withdraw Funds</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="withdrawForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="withdrawCurrency" class="form-label">Currency</label>
+                            <select class="form-select" id="withdrawCurrency">
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                            </select>
+                            <small class="form-text text-muted">Available: <span id="withdrawAvailableBalance">0.00</span></small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="withdrawAmount" class="form-label">Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="withdrawCurrencySymbol">$</span>
+                                <input type="number" step="0.01" class="form-control" id="withdrawAmount" placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="withdrawMethod" class="form-label">Withdrawal Method</label>
+                            <select class="form-select" id="withdrawMethod">
+                                <option value="bank">Bank Account</option>
+                                <option value="crypto">Cryptocurrency</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="withdrawDetails" class="form-label">Account Details</label>
+                            <textarea class="form-control" id="withdrawDetails" rows="3" placeholder="Enter bank account details or crypto wallet address" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Request Withdrawal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div class="modal fade" id="transferModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Transfer Funds</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="transferForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="transferFromCurrency" class="form-label">From Currency</label>
+                            <select class="form-select" id="transferFromCurrency">
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                            </select>
+                            <small class="form-text text-muted">Available: <span id="transferAvailableBalance">0.00</span></small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transferAmount" class="form-label">Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="transferCurrencySymbol">$</span>
+                                <input type="number" step="0.01" class="form-control" id="transferAmount" placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transferToCurrency" class="form-label">To Currency</label>
+                            <select class="form-select" id="transferToCurrency">
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipientEmail" class="form-label">Recipient Email</label>
+                            <input type="email" class="form-control" id="recipientEmail" placeholder="recipient@example.com" required>
+                        </div>
+                        <div class="alert alert-info exchange-rate-info">
+                            <p class="mb-1">Exchange Rate: <span id="transferExchangeRate">Fetching...</span></p>
+                            <p class="mb-0">Recipient will receive: <span id="transferReceiveAmount">~0.00</span></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm Transfer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./js/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load dashboard data
+            loadDashboardData();
+        });
+
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('/api/dashboard/data');
+                if (!response.ok) {
+                    throw new Error('Failed to load dashboard data');
+                }
+                const data = await response.json();
+                updateDashboard(data);
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                showToast('Failed to load dashboard data', 'error');
+            }
+        }
+
+        // Add other dashboard-specific functions here
+    </script>
 </body>
 </html> 

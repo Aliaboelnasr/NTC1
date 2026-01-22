@@ -296,101 +296,124 @@
     background: white;
     border-radius: 15px;
     padding: 1.5rem;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .balance-card:hover {
     transform: translateY(-5px);
-}
-
-.balance-card.primary {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    color: white;
-}
-
-.balance-card.secondary {
-    background: linear-gradient(135deg, #059669, #047857);
-    color: white;
-}
-
-.balance-card.tertiary {
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
-    color: white;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .balance-icon {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 2rem;
-    opacity: 0.8;
-}
-
-.balance-info h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
-
-.balance-info h2 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-
-.balance-info p {
-    margin: 0;
-    opacity: 0.8;
-    font-size: 0.9rem;
-}
-
-/* Quick Actions */
-.quick-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.action-btn {
-    background: white;
-    border: none;
-    border-radius: 10px;
-    padding: 1rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.balance-card.primary .balance-icon { background-color: var(--primary-color); }
+.balance-card.secondary .balance-icon { background-color: var(--success-color); }
+.balance-card.tertiary .balance-icon { background-color: var(--warning-color); }
+
+.balance-info h3 {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.balance-info h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    color: #343a40;
+}
+
+.balance-info p {
+    font-size: 0.8rem;
+    color: #adb5bd;
+    margin-bottom: 0;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    border: none;
+    border-radius: 10px;
+    background: white;
+    color: var(--text-dark);
     font-weight: 500;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    gap: 0.5rem;
 }
 
 .action-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .action-btn i {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.action-btn.deposit {
-    color: #059669;
+.action-btn.deposit { color: var(--success-color); }
+.action-btn.withdraw { color: var(--danger-color); }
+.action-btn.transfer { color: var(--primary-color); }
+.action-btn.history { color: var(--info-color); }
+
+/* Modal Styles */
+.modal-content {
+    border: none;
+    border-radius: 15px;
 }
 
-.action-btn.withdraw {
-    color: #dc2626;
+.modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
 }
 
-.action-btn.transfer {
-    color: #2563eb;
+.modal-body {
+    padding: 1.5rem;
 }
 
-.action-btn.history {
-    color: #7c3aed;
+.modal-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .balance-card {
+        padding: 1rem;
+    }
+    
+    .balance-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
 }
 
 /* Transaction History */
@@ -453,43 +476,6 @@
     font-weight: 500;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .balance-card {
-        margin-bottom: 1rem;
-    }
-
-    .quick-actions {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .payment-methods {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.balance-card {
-    position: relative;
-}
-
-.balance-card.loading::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.transaction-history.loading {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
 /* Animation for value changes */
 .balance-update {
     animation: highlightUpdate 1s ease-out;
@@ -498,4 +484,161 @@
 @keyframes highlightUpdate {
     0% { background-color: rgba(255, 255, 0, 0.2); }
     100% { background-color: transparent; }
-} 
+}
+
+/* Transaction page styles */
+.showing-entries {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+#transactionsTableBody .badge {
+    padding: 0.5em 0.75em;
+    font-weight: 500;
+}
+
+.transaction-details .row {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction-details .row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.pagination .page-link {
+    color: var(--primary-color);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.content-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.content-card .card-header {
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.content-card .card-body {
+    padding: 1.5rem;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+}
+
+/* Exchange Section Styles */
+#exchange .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+#exchange .form-text {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+#exchange #setMaxAmountBtn {
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#exchange .exchange-rate-info {
+    background-color: #f8f9fa; /* Light background for info box */
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+#exchange #exchangeToAmount {
+    background-color: #e9ecef; /* Indicate read-only */
+    cursor: not-allowed;
+}
+
+#exchangeBalancesList .list-group-item span,
+#exchangeLiveRates .list-group-item span {
+    font-weight: 500;
+}
+
+#exchangeBalancesList .list-group-item strong,
+#exchangeLiveRates .list-group-item span:last-child {
+    color: #343a40;
+}
+
+#exchangeBalancesList .list-group-item span:first-child {
+     margin-right: 10px; /* Space for flag */
+}
+
+/* Dashboard Section Styles */
+.dashboard-section {
+    display: none;
+}
+
+.dashboard-section.active-section {
+    display: block;
+}
+
+/* Wallet Section Styles */
+.balance-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.balance-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    border: none;
+    border-radius: 10px;
+    background: white;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    gap: 0.5rem;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.action-btn.deposit { color: var(--success-color); }
+.action-btn.withdraw { color: var(--danger-color); }
+.action-btn.transfer { color: var(--primary-color); }
+.action-btn.history { color: var(--info-color); } 

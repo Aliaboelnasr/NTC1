@@ -3,29 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions History | Money Exchange</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="css/transactions.css" rel="stylesheet">
+    <title>Transactions</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.html">
-                <i class="fas fa-exchange-alt"></i> Money Exchange
-            </a>
+    <nav class="navbar navbar-expand-lg  bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">My App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                <ul class="navbar-nav me-auto text-black">
+                    <li class="nav-item ">
+                        <a class="nav-link " href="dashboard.html">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="transactions.html">Transactions</a>
@@ -53,184 +47,68 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="container-fluid py-4">
-        <!-- Page Header -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="h3">Transaction History</h1>
-                    <div class="actions">
-                        <button class="btn btn-outline-primary me-2" id="refreshBtn">
-                            <i class="fas fa-sync-alt"></i> Refresh
-                        </button>
-                        <button class="btn btn-primary" id="exportBtn">
-                            <i class="fas fa-download"></i> Export
-                        </button>
+    <div class="container py-4">
+        <!-- Transaction Summary Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Total Transactions</h6>
+                        <h2 class="card-title mb-0" id="totalTransactions">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Total Deposits</h6>
+                        <h2 class="card-title mb-0 text-success" id="totalDeposits">$0.00</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Total Withdrawals</h6>
+                        <h2 class="card-title mb-0 text-danger" id="totalWithdrawals">$0.00</h2>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Statistics Cards -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-card-body">
-                        <h6>Total Transactions</h6>
-                        <h3 id="totalTransactions">0</h3>
-                        <p class="mb-0"><span class="text-success">↑ 12%</span> vs last month</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-card-body">
-                        <h6>Total Volume</h6>
-                        <h3 id="totalVolume">$0.00</h3>
-                        <p class="mb-0"><span class="text-success">↑ 8%</span> vs last month</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-card-body">
-                        <h6>Pending Transactions</h6>
-                        <h3 id="pendingTransactions">0</h3>
-                        <p class="mb-0"><span class="text-warning">→ 0%</span> vs last month</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-card-body">
-                        <h6>Success Rate</h6>
-                        <h3 id="successRate">0%</h3>
-                        <p class="mb-0"><span class="text-success">↑ 2%</span> vs last month</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Filters -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <form id="filterForm" class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label">Date Range</label>
-                        <div class="input-group">
-                            <input type="date" class="form-control" id="startDate">
-                            <span class="input-group-text">to</span>
-                            <input type="date" class="form-control" id="endDate">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Transaction Type</label>
-                        <select class="form-select" id="transactionType">
-                            <option value="all">All Types</option>
-                            <option value="deposit">Deposits</option>
-                            <option value="withdrawal">Withdrawals</option>
-                            <option value="transfer">Transfers</option>
-                            <option value="exchange">Exchange</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Status</label>
-                        <select class="form-select" id="status">
-                            <option value="all">All Status</option>
-                            <option value="completed">Completed</option>
-                            <option value="pending">Pending</option>
-                            <option value="failed">Failed</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Currency</label>
-                        <select class="form-select" id="currency">
-                            <option value="all">All Currencies</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Amount Range</label>
-                        <div class="input-group">
-                            <input type="number" class="form-control" id="minAmount" placeholder="Min">
-                            <input type="number" class="form-control" id="maxAmount" placeholder="Max">
-                        </div>
-                    </div>
-                    <div class="col-md-1 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-filter"></i> Filter
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Transactions Table -->
+        <!-- Transaction List -->
         <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Transaction History</h5>
+                <div class="btn-group">
+                    <button class="btn btn-outline-primary" data-filter="all">All</button>
+                    <button class="btn btn-outline-success" data-filter="deposit">Deposits</button>
+                    <button class="btn btn-outline-danger" data-filter="withdrawal">Withdrawals</button>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="transactionTable">
                         <thead>
                             <tr>
-                                <th>Date & Time</th>
-                                <th>Transaction ID</th>
+                                <th>Date</th>
                                 <th>Type</th>
                                 <th>Amount</th>
-                                <th>Currency</th>
                                 <th>Status</th>
                                 <th>Description</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="transactionsTableBody">
+                        <tbody>
                             <!-- Transactions will be loaded here -->
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Pagination -->
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                    <div class="showing-entries">
-                        Showing <span id="showing-start">0</span> to <span id="showing-end">0</span> of <span id="total-entries">0</span> entries
-                    </div>
-                    <nav aria-label="Transaction navigation">
-                        <ul class="pagination mb-0" id="pagination">
-                            <!-- Pagination will be generated here -->
-                        </ul>
-                    </nav>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- Transaction Details Modal -->
-    <div class="modal fade" id="transactionModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Transaction Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="transactionDetails">
-                    <!-- Transaction details will be loaded here -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="downloadReceipt">
-                        <i class="fas fa-file-download"></i> Download Receipt
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Container -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/transactions.js"></script>
+    <script src="js/transaction.js"></script>
 </body>
 </html> 
